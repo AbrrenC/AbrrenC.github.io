@@ -1,4 +1,28 @@
 // ============================================
+// THEME TOGGLE
+// ============================================
+
+function initTheme() {
+    const saved = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    if (saved === 'dark' || (!saved && prefersDark)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    }
+}
+
+function toggleTheme() {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+}
+
+// Initialize theme immediately to prevent flash
+initTheme();
+
+// ============================================
 // RENDER FUNCTIONS
 // Automatically renders posts and projects from data.js
 // ============================================
@@ -71,4 +95,10 @@ function renderProjects() {
 document.addEventListener('DOMContentLoaded', () => {
     renderPosts();
     renderProjects();
+
+    // Theme toggle button
+    const themeToggle = document.querySelector('.theme-toggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', toggleTheme);
+    }
 });
